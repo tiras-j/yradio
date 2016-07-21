@@ -84,10 +84,7 @@ def show_entries():
     entries = cur.fetchall()
     return render_template('index.html', entries=entries)
 
-@app.route('/useradd', methods=['POST'])
 def add_user(user_name, password='haha', comment='super awesome'):
-    if not session.get('logged_in'):
-        raise  
     db = get_db()
     # CHANGE INSERT STATEMENT
     db.execute(
@@ -114,8 +111,8 @@ def add_playlist(playlist_name, user_id, link, tags=[], comment='',):
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        # Add User somehow
-        return redirect(url_for('/'))
+        add_user(request.form['username'], request.form['password'])
+        return redirect(url_for(''))
     return render_template('signup.html')
 
 @app.route('/login', methods=['GET', 'POST'])
