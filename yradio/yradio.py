@@ -82,7 +82,6 @@ def show_entries():
 
     cur = db.execute('select * from Users order by USER_ID desc')
     entries = cur.fetchall()
-
     return render_template('index.html', entries=entries)
 
 
@@ -95,6 +94,7 @@ def add_user(user_name, password='haha', comment='super awesome'):
     db.commit()
 
 # POST
+#needs works
 def add_playlist():
     if not session.get('logged_in'):
         raise  
@@ -107,3 +107,25 @@ def add_playlist():
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != app.config['USERNAME']:
+            error = 'Invalid username'
+        elif request.form['password'] != app.config['PASSWORD']:
+            error = 'Invalid password'
+        else:
+            session['logged_in'] = True
+            flash('You were logged in')
+            return redirect(url_for('show_entries'))
+    return render_template('login.html', error=error)
+
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('You were logged out')
+    return redirect(url_for('show_entries'))
+>>>>>>> 3346c78e2de25fbbd26108c6c3d5e6395df4e520

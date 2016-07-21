@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Testing 1 2 3</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="page-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4 text-center"></div>
+          <div class="col-md-4 text-right">
+            <a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+            <a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-log-in"></span> Log In</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="jumbotron">
+        <h1 class="text-center">Welcome to y/radio!</h1>
+        <p>Jumbotron text.</p>
+      </div>
+      <div class="row">
+        <div class="col-md-6"><div class="well"><a href=#>News</a></div></div>
+        <div class="col-md-6"><div class="well">Well Text Right</div></div>
+      </div>
+      <ul class="list-group">
+        {% for entry in entries %}
+          <li><h2>{{ entry.USER_NAME }}</h2>{{ entry.DATE_JOINED }}
+        {% else %}
+          <li><em>Unbelievable. No entries here so far</em>
+        {% endfor %}
+      </ul>
+    </div>
+  </body>
+</html>
