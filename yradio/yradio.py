@@ -86,6 +86,13 @@ def add_entry():
     return redirect(url_for('show_entries'))
 
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        # Add User somehow
+        return redirect(url_for('/'))
+    return render_template('signup.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None

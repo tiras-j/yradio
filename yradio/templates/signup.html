@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Testing 1 2 3</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <h2>Sign Up</h2>
+    <form action="{{ url_for('useradd') }}" method="post">
+      <dl>
+        <dt>Username:
+        <dd><input type="text" name="username">
+        <dt>Password:
+        <dd><input type="password" name="password">
+        <dd><input type="submit" value="Sign Up">
+      </dl>
+    </form>
+  </body>
+</html>
