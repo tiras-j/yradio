@@ -82,6 +82,7 @@ def show_entries():
 
     cur = db.execute('select * from Users order by USER_ID desc')
     entries = cur.fetchall()
+    import pdb; pdb.set_trace()
     return render_template('index.html', entries=entries)
 
 def add_user(user_name, password='haha', comment='super awesome'):
@@ -94,18 +95,16 @@ def add_user(user_name, password='haha', comment='super awesome'):
     db.commit()
 
 # POST
-#needs works
 def add_playlist(playlist_name, user_id, link, tags=[], comment='',):
     if not session.get('logged_in'):
         raise  
     db = get_db()
-
     # CHANGE INSERT STATEMENT
-    db.execute('insert into Playlists (PLAYLIST_NAME, USER_ID, Tags, COMMENT, LINK) \
-        values ({0}, ?)'.format(),
-                 [request.form['title'], request.form['text']])
+    db.execute('insert into Playlists (PLAYLIST_NAME, USER_ID, Tags, COMMENT, LINK) values (?, ?, ?, ?)',
+        [playlist_name, user_id, link, ','.join(tags), comment]
+    )
     db.commit()
-    flash('New entry was successfully posted')
+    # flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
 
 
