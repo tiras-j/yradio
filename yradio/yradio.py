@@ -84,8 +84,10 @@ def show_entries():
     entries = cur.fetchall()
     return render_template('index.html', entries=entries)
 
-
+@app.route('/useradd', methods=['POST'])
 def add_user(user_name, password='haha', comment='super awesome'):
+    if not session.get('logged_in'):
+        raise  
     db = get_db()
     # CHANGE INSERT STATEMENT
     db.execute(
@@ -95,13 +97,14 @@ def add_user(user_name, password='haha', comment='super awesome'):
 
 # POST
 #needs works
-def add_playlist():
+def add_playlist(playlist_name, user_id, link, tags=[], comment='',):
     if not session.get('logged_in'):
         raise  
     db = get_db()
 
     # CHANGE INSERT STATEMENT
-    db.execute('insert into playlist (title, text) values (?, ?)',
+    db.execute('insert into Playlists (PLAYLIST_NAME, USER_ID, Tags, COMMENT, LINK) \
+        values ({0}, ?)'.format(),
                  [request.form['title'], request.form['text']])
     db.commit()
     flash('New entry was successfully posted')
@@ -128,4 +131,3 @@ def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('show_entries'))
->>>>>>> 3346c78e2de25fbbd26108c6c3d5e6395df4e520
