@@ -88,7 +88,8 @@ def add_user(user_name, password='haha', comment='super awesome'):
     db = get_db()
     # CHANGE INSERT STATEMENT
     db.execute(
-        'insert into Users (USER_NAME, PASSWORD, COMMENT) values ({0}, {1}, {2})'.format( user_name, password, comment,)
+        'insert into Users (USER_NAME, PASSWORD, COMMENT) values (?, ?, ?)',
+        [user_name, password, comment]
     )
     db.commit()
 
@@ -111,8 +112,8 @@ def add_playlist(playlist_name, user_id, link, tags=[], comment='',):
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        add_user(request.form['username'], request.form['password'])
-        return redirect(url_for(''))
+        add_user(request.form['username'])
+        return redirect(url_for('show_entries'))
     return render_template('signup.html')
 
 @app.route('/login', methods=['GET', 'POST'])
