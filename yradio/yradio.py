@@ -22,7 +22,6 @@ app.config.update(dict(
 app.config.from_envvar('YRADIO_SETTINGS', silent=True)
 
 
-
 def connect_db():
     """Connects to the specific database."""
     rv = sqlite3.connect(app.config['DATABASE'])
@@ -67,11 +66,11 @@ def initdb_command():
 # do the deed:
 # flask initdb
 
+# LOGIN CRAP
 
 
-##### Create a view.... assuming this is gonna go in show_entries.html
 
-
+# SERVLET SHIT
 # GET
 @app.route('/')
 def show_entries():
@@ -82,7 +81,6 @@ def show_entries():
 
     cur = db.execute('select * from Users order by USER_ID desc')
     entries = cur.fetchall()
-    import pdb; pdb.set_trace()
     return render_template('index.html', entries=entries)
 
 def add_user(user_name, password='haha', comment='super awesome'):
