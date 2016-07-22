@@ -5,7 +5,7 @@ import requests
 
 import re
 
-from create_playlist import get_song_tags, import_playlist
+from create_playlist import get_song_tags, import_playlist, get_auth_token
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
 
@@ -159,9 +159,9 @@ def logout():
 
 @app.route('/create', methods=['POST'])
 def create():
-
     #replace with yradio user id
     yradio_uid = 1241941697
+    auth_token = get_auth_token()
 
     link = request.form['link']
     user = request.form['user']
@@ -171,19 +171,20 @@ def create():
     #remove dupes
 
     info = re.split(':|/', link)
-    playlist_id = link[-1]
-    user_id = link[-3]
+    playlist_id = info[-1]
+    user_id = info[-3]
 
-    # response = requests.get(
-    #     "https://api.spotify.com/v1/users/{0}/playlists/{1}".format(user_id, playlist_id),
-    #     headers = {'Authorization': 'Bearer {0}'.format(auth_token)}
-    # )
-    # #TODO handle failure
-    # playlist = response.json()
-    # tags = tags + get_song_tags(auth_token, playlist)
+    response = requests.get(
+        "https://api.spotify.com/v1/users/{0}/playlists/{1}".format(user_id, playlist_id),
+        headers = {'Authorization': 'Bearer {0}'.format(auth_token)}
+    )
+    #TODO handle failure
+    playlist = response.json()
+    tags.append('#{0}'.format(playlist['name']))
+    tags = tags + get_song_tags(auth_token, playlist)
+    tags = list(set(tags))
 
-    # imported_pl = import_playlist(auth_token, yradio_uid, user_id, playlist)
-    # tags = list(set(tags))
-    
-    add_playlist('name-ph', user, link, tags)
+    imported_pl = import_playlist(auth_token, yradio_uid, user_id, playlist)
+
+    add_playlist(playlist['name'], user, link, tags)
     return redirect(url_for('show_entries'))

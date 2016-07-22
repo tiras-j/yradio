@@ -56,7 +56,7 @@ def get_song_tags(auth_token, playlist):
         if feature['liveness'] > .8:
             traits.append('liverecording')
         if feature['valence'] > .8:
-            traists.append('happy')
+            traits.append('happy')
         elif feature['valence'] < .2:
             traits.append('melancholy')
 
@@ -74,16 +74,20 @@ def get_song_tags(auth_token, playlist):
 
 #creates new playlist, adds tracks to it, and returns the new playlist's link
 def import_playlist(auth_token, yradio_uid, user_id, playlist):
+    data =  json.dumps({'name': playlist['name'], 'public': True})
+    print data
     response = requests.post(
         'https://api.spotify.com/v1/users/{0}/playlists'.format(yradio_uid),
         headers = {
             'Authorization': 'Bearer {0}'.format(auth_token),
             'Content-Type': 'application/json'
         },
-        data = json.dumps({'name': playlist['name'], 'public': True})
+        data = data
     )
 
     imported_playlist = response.json()
+    print playlist['name']
+    print imported_playlist
     imported_playlist_id = imported_playlist['id']
     playlist_id = playlist['id']
 
@@ -119,12 +123,14 @@ def import_playlist(auth_token, yradio_uid, user_id, playlist):
         else:
             return imported_playlist['external_urls']['spotify']
 
+def get_auth_token():
+    f = open('auth_token.txt', 'r')
+    return f.read()
+
 # for testing purposes
 if __name__ == "__main__":
-    args = {}
-    args['link'] = 'https://open.spotify.com/user/1225246805/playlist/3AMXgrggD1bN37zk0AtiN6'
-    args['tags'] = []
-    args['user'] = 'cgordon'
-    args['spotify_id'] = '1225246805'
+    token = get_auth_token()
+    playlist = {'name': 'myname'}
+    import_playlist(token, 1241941697, 213123123123, playlist)
 
-    create_playlist(args, 'BQBaREfuVyrEJnuORNVrs1S31RIYsXVltXOpL-goce_BLoECmNJucDtE3dQq--kWX2FuA7VShUyZ6W2hiSjLGNB6EjjbTkC3d8A8LOgDbgfCjq4lyD4FlMF6NHziuWl-02DoW4pr51WYMu25nGAzug_7h5ItQkSLbZ55yTz-WPnJjTSm14WpS6c')
+
