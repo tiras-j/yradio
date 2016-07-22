@@ -30,7 +30,10 @@
       </div>
       <div class="row">
         <div class="col-md-6"><div class="well"><a href=#>News</a></div></div>
-        <div class="col-md-6"><div class="well">Well Text Right</div></div>
+        <div class="col-md-6"><div class="well">
+          Well Text Right
+          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addPlaylist">Add Playlist</button>
+        </div></div>
       </div>
       <ul class="list-group">
         {% for entry in entries %}
@@ -39,6 +42,32 @@
           <li><em>Unbelievable. No entries here so far</em>
         {% endfor %}
       </ul>
+    </div>
+    <div id="addPlaylist" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h4 class="modal-title">Add Playlist</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" action="{{ url_for('create') }}" method="post">
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input name="name" type="text" class="form-control" id="name" placeholder="Enter Name">
+            </div>
+            <div class="form-group">
+              <label for="user">User:</label>
+              <input name="user" type="text" class="form-control" id="user" placeholder="User">
+            </div>
+            <div class="form-group">
+              <label for="spot">Spotify ID:</label>
+              <input name="spotify_id" type="text" class="form-control" id="spot" placeholder="ID">
+            </div>
+            <div class="form-group">
+              <label for="tags">Tags:</label>
+              <input name="tags" type="text" class="form-control" id="tags" placeholder="Tags">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
     </div>
   </body>
 </html>

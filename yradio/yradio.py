@@ -82,7 +82,6 @@ def show_entries():
 
     cur = db.execute('select * from Users order by USER_ID desc')
     entries = cur.fetchall()
-    import pdb; pdb.set_trace()
     return render_template('index.html', entries=entries)
 
 def add_user(user_name, password='haha', comment='super awesome'):
