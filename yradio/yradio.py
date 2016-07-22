@@ -105,15 +105,22 @@ def add_playlist(playlist_name, user_id, link, tags=[], comment='',):
         [playlist_name, user_id, ','.join(tags), comment, link]
     )
     new_playlist_id = new_playlist_id.lastrowid
-    import pdb; pdb.set_trace()
+
     for tag in tags:
         cur = db.execute(
-            'select PLAYLISTS_LIST from Tags Where TAG_NAME={0}'.format(tag)
-        ) 
-        updated_lists = cur.fetchall().append(new_playlist_id)
+            'select PLAYLISTS_LIST from Tags Where TAG_NAME=?',
+            [tag]
+        )
+        updated_lists = cur.fetchall()
+        try:
+            updated_lists = updated_lists.split(',')
+        except:
+            pass
+
+        updated_lists.append(new_playlist_id)
         db.execute(
-            'insert into Tags (TAG_NAME, PLAYLISTS_LIST) values (?, ?)',
-            [tag, updated_lists]
+            'insert or replace into Tags (TAG_NAME, PLAYLISTS_LIST) values (?, ?)',
+            [tag, ','.join([str(item) for item in updated_lists])]
         )
 
     db.commit()
@@ -179,3 +186,4 @@ def create():
     # tags = list(set(tags))
     
     add_playlist('name-ph', user, link, tags)
+    return redirect(url_for('show_entries'))
