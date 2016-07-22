@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Testing 1 2 3</title>
+    <title>yRadio</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -49,18 +49,14 @@
           <h4 class="modal-title">Add Playlist</h4>
         </div>
         <div class="modal-body">
-          <form role="form" >
-            <div class="form-group">
-              <label for="name">Name:</label>
-              <input name="name" type="text" class="form-control" id="name" placeholder="Enter Name">
-            </div>
+          <form role="form" action="{{ url_for('create') }}" method="post">
             <div class="form-group">
               <label for="user">User:</label>
               <input name="user" type="text" class="form-control" id="user" placeholder="User">
             </div>
             <div class="form-group">
-              <label for="spot">Spotify ID:</label>
-              <input name="spotify_id" type="text" class="form-control" id="spot" placeholder="ID">
+              <label for="link">Link:</label>
+              <input name="link" type="text" class="form-control" id="link" placeholder="Link">
             </div>
             <div class="form-group">
               <label for="tags">Tags:</label>

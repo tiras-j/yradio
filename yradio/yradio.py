@@ -2,7 +2,9 @@
 import os
 import sqlite3
 import requests
-# import mysql
+
+import re
+
 from create_playlist import get_song_tags, import_playlist
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
@@ -95,13 +97,25 @@ def add_user(user_name, password='haha', comment='super awesome'):
 
 # POST
 def add_playlist(playlist_name, user_id, link, tags=[], comment='',):
-    if not session.get('logged_in'):
-        raise
+
     db = get_db()
     # CHANGE INSERT STATEMENT
-    db.execute('insert into Playlists (PLAYLIST_NAME, USER_ID, Tags, COMMENT, LINK) values (?, ?, ?, ?)',
-        [playlist_name, user_id, link, ','.join(tags), comment]
+    new_playlist_id = db.execute(
+        'insert into Playlists (PLAYLIST_NAME, USER_ID, Tags, COMMENT, LINK) values (?, ?, ?, ?, ?)',
+        [playlist_name, user_id, ','.join(tags), comment, link]
     )
+    new_playlist_id = new_playlist_id.lastrowid
+    import pdb; pdb.set_trace()
+    for tag in tags:
+        cur = db.execute(
+            'select PLAYLISTS_LIST from Tags Where TAG_NAME={0}'.format(tag)
+        ) 
+        updated_lists = cur.fetchall().append(new_playlist_id)
+        db.execute(
+            'insert into Tags (TAG_NAME, PLAYLISTS_LIST) values (?, ?)',
+            [tag, updated_lists]
+        )
+
     db.commit()
     # flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
@@ -137,30 +151,31 @@ def logout():
 
 
 @app.route('/create', methods=['POST'])
-def create_playlist(auth_token):
-    yradio_uid = get_yradio_uid()
-    auth_token = get_auth_token()
+def create():
 
     #replace with yradio user id
     yradio_uid = 1241941697
 
-    args = request.get_json()
-    link = args['link']
-    user = args['user']
-    tags = args['tags']
-    tags.append(user)
+    link = request.form['link']
+    user = request.form['user']
+    tags = request.form['tags'].split()
+    tags.append('#{0}'.format(user))
+    #add more crap
+    #remove dupes
 
     info = re.split(':|/', link)
     playlist_id = link[-1]
     user_id = link[-3]
-    response = requests.get(
-        "https://api.spotify.com/v1/users/{0}/playlists/{1}".format(user_id, playlist_id),
-        headers = {'Authorization': 'Bearer {0}'.format(auth_token)}
-    )
-    #TODO handle failure
-    playlist = response.json()
-    tags = tags + get_song_tags(auth_token, playlist)
 
-    imported_pl = import_playlist(auth_token, yradio_uid, user_id, playlist)
+    # response = requests.get(
+    #     "https://api.spotify.com/v1/users/{0}/playlists/{1}".format(user_id, playlist_id),
+    #     headers = {'Authorization': 'Bearer {0}'.format(auth_token)}
+    # )
+    # #TODO handle failure
+    # playlist = response.json()
+    # tags = tags + get_song_tags(auth_token, playlist)
 
-    add_playlist(playlist['name'], user, imported_pl, tags)
+    # imported_pl = import_playlist(auth_token, yradio_uid, user_id, playlist)
+    # tags = list(set(tags))
+    
+    add_playlist('name-ph', user, link, tags)

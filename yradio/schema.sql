@@ -2,7 +2,7 @@
 drop table if exists Users;
 create table Users (
         USER_ID INTEGER PRIMARY KEY,
-        USER_NAME TEXT NOT NULL,
+        USER_NAME TEXT NOT NULL UNIQUE,
         PASSWORD TEXT NOT NULL, -- this needs to be taken care off later for n
         COMMENT TEXT, -- this needs to be taken care off later
         DATE_JOINED TEXT DEFAULT CURRENT_TIMESTAMP -- this needs to be taken care off later
@@ -12,7 +12,7 @@ create table Users (
 drop table if exists Playlists;
 create table Playlists (
         PLAYLIST_ID INTEGER PRIMARY KEY,
-        PLAYLIST_NAME TEXT NOT NULL,
+        PLAYLIST_NAME TEXT NOT NULL UNIQUE,
         USER_ID TEXT NOT NULL,
         Tags TEXT NOT NULL, -- this will be limited by the size limit of mysql text fields
         DATE_ADDED TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -27,7 +27,7 @@ create table Playlists (
 drop table if exists Tags;
 create table Tags (
         TAG_ID INTEGER PRIMARY KEY, --just id
-        TAG_NAME TEXT NOT NULL,
+        TAG_NAME TEXT NOT NULL UNIQUE,
         PLAYLISTS_LIST TEXT NOT NULL, -- this will be limited by the size limit of mysql text fields
         DATE_ADDED TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
