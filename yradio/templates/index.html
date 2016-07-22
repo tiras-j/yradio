@@ -17,6 +17,7 @@
           <div class="col-md-4"></div>
           <div class="col-md-4 text-center"></div>
           <div class="col-md-4 text-right">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addPlaylist">Add Playlist</button>
             <a href="{{ url_for('signup') }}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
             <a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-log-in"></span> Log In</a>
           </div>
@@ -26,14 +27,7 @@
     <div class="container">
       <div class="jumbotron">
         <h1 class="text-center">Welcome to y/radio!</h1>
-        <p>Jumbotron text.</p>
-      </div>
-      <div class="row">
-        <div class="col-md-6"><div class="well"><a href=#>News</a></div></div>
-        <div class="col-md-6"><div class="well">
-          Well Text Right
-          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addPlaylist">Add Playlist</button>
-        </div></div>
+        <h2 class="text-center">Search for playlist by artist, genre, and tags</h2>
       </div>
       <ul class="list-group">
         {% for entry in entries %}
@@ -42,6 +36,10 @@
           <li><em>Unbelievable. No entries here so far</em>
         {% endfor %}
       </ul>
+    </div>
+    <div class="row">
+      <input name="search" type="text" class="form-control" id="search" placeholder="Search for playlists" size=40>
+      <button type="submit" class="btn btn-default">submit</button>
     </div>
     <div id="addPlaylist" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -66,7 +64,7 @@
               <label for="tags">Tags:</label>
               <input name="tags" type="text" class="form-control" id="tags" placeholder="Tags">
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default">submit</button>
         </div>
     </div>
   </body>
