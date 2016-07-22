@@ -148,6 +148,7 @@ def create_playlist(auth_token):
     link = args['link']
     user = args['user']
     tags = args['tags']
+    tags.append(user)
 
     info = re.split(':|/', link)
     playlist_id = link[-1]
