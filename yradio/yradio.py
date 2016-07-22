@@ -200,18 +200,16 @@ def create():
     playlist_id = link[-1]
     user_id = link[-3]
 
-    auth_token = 'BQBVkhVIXqzE9OLmO8L8TLw9s1TGYx9BpL7XOsiVDFr-I0OOAy8_LkzNTfuiy6BRK1yI62UVOmFrSiKPMilVVhBPlBEJmA-rM_HJZ9TVDM3Aelmc9q79Jf8ykbFL92Fl-4iaTev2ZxLja9UahYYiFKKS90dPDqO43mY0tcM1TfCXK30jguTwo2s'
+    # response = requests.get(
+    #     "https://api.spotify.com/v1/users/{0}/playlists/{1}".format(user_id, playlist_id),
+    #     headers = {'Authorization': 'Bearer {0}'.format(auth_token)}
+    # )
+    # #TODO handle failure
+    # playlist = response.json()
+    # tags = tags + get_song_tags(auth_token, playlist)
 
-    response = requests.get(
-        "https://api.spotify.com/v1/users/{0}/playlists/{1}".format(user_id, playlist_id),
-        headers = {'Authorization': 'Bearer {0}'.format(auth_token)}
-    )
-    #TODO handle failure
-    playlist = response.json()
-    tags = tags + get_song_tags(auth_token, playlist)
-
-    imported_pl = import_playlist(auth_token, yradio_uid, user_id, playlist)
-    tags = list(set(tags))
+    # imported_pl = import_playlist(auth_token, yradio_uid, user_id, playlist)
+    # tags = list(set(tags))
     
     add_playlist('name', user, link, tags)
     return redirect(url_for('show_entries'))
