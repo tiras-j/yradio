@@ -69,26 +69,52 @@ def initdb_command():
 # do the deed:
 # flask initdb
 
-# LOGIN CRAP
+def search_tag(tag):
+    """
+    display latest added playlist corresponding to given tag
+    """
+    db = get_db()
+    # get playlist ids
 
+    cur = db.execute(
+        'select PLAYLISTS_LIST from Tags Where TAG_NAME=?',
+        [tag]
+    )
+    playlist_ids = cur.fetchall()
+    try:
+        playlist_ids = updated_lists.split(',')
+    except:
+        pass
+    entries = []
+    # TODO make message better if no result for search tag
+    for playlist_id in playlist_ids:
+        cur = db.execute(
+            'select * from Playlists where PLAYLIST_ID = ?',
+            [playlist_id]
+        )
+        entries.append(cur.fetchall())
+
+    return render_template('index.html', entries=entries)
 
 
 # SERVLET SHIT
 # GET
 @app.route('/')
 def show_entries():
+    """
+    this displays the last added playlists.
+    """
+    if request.method ==  'GET' and request.form.get('search', None):
+        return search_tag(
+            request.form['search']
+    )
     db = get_db()
-
-    # GET data
-    # CHANGE the db select statements
-
-    cur = db.execute('select * from Users order by USER_ID desc')
+    cur = db.execute('select * from Playlists order by PLAYLIST_ID desc limit 3')
     entries = cur.fetchall()
     return render_template('index.html', entries=entries)
 
 def add_user(user_name, password='haha', comment='super awesome'):
     db = get_db()
-    # CHANGE INSERT STATEMENT
     db.execute(
         'insert into Users (USER_NAME, PASSWORD, COMMENT) values (?, ?, ?)',
         [user_name, password, comment]
@@ -171,6 +197,7 @@ def create():
     #remove dupes
 
     info = re.split(':|/', link)
+<<<<<<< HEAD
     playlist_id = info[-1]
     user_id = info[-3]
 
