@@ -1,38 +1,7 @@
 from flask import request
-from yradio import add_playlist, get_yradio_uid, get_auth_token
 
 import requests
 import json
-
-
-@app.route('/create', methods=['POST'])
-def create_playlist(auth_token):
-    yradio_uid = get_yradio_uid()
-    auth_token = get_auth_token()
-
-    #replace with yradio user id
-    yradio_uid = 1241941697
-
-    args = request.get_json()
-    link = args['link']
-    user = args['user']
-    user_id = args['spotify_id']
-    tags = args['tags']
-
-    #TODO pull this and the user id out more intelligently
-    playlist_id = link[-22:]
-    response = requests.get(
-        "https://api.spotify.com/v1/users/{0}/playlists/{1}".format(user_id, playlist_id),
-        headers = {'Authorization': 'Bearer {0}'.format(auth_token)}
-    )
-    #TODO handle failure
-    playlist = response.json()
-    tags = tags + get_song_tags(auth_token, playlist)
-
-    imported_pl = import_playlist(auth_token, yradio_uid, user_id, playlist)
-
-    add_playlist(name, user, imported_pl, tags)
-
 
 #iterate through tracks gathering song information, and tagging playlist accordingly
 def get_song_tags(auth_token, playlist):
