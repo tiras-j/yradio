@@ -125,7 +125,7 @@ def import_playlist(auth_token, yradio_uid, user_id, playlist):
 
 def get_auth_token():
     f = open('auth_token.txt', 'r')
-    return f.read()
+    return f.read().rstrip()
 
 # for testing purposes
 if __name__ == "__main__":

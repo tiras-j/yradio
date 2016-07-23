@@ -197,7 +197,7 @@ def create():
     #remove dupes
 
     info = re.split(':|/', link)
-<<<<<<< HEAD
+
     playlist_id = info[-1]
     user_id = info[-3]
 
@@ -207,6 +207,7 @@ def create():
     )
     #TODO handle failure
     playlist = response.json()
+
     tags.append('#{0}'.format(playlist['name']))
     tags = tags + get_song_tags(auth_token, playlist)
     tags = list(set(tags))
